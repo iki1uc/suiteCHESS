@@ -1,0 +1,66 @@
+export const PULL = {
+  code: "PULL",
+  state: "active",
+  action: "backward",
+  meaning: "Rückwärtsbewegung / Rückführung",
+  station: "SUS",
+  respo: "ROOT",
+  axis: "AIV",
+  io: "allOUT",
+
+  flow: false,
+  break: false,
+  root: true,
+
+  pipeline: 0,
+
+  port: {
+    ma1: "none",
+    ma2: "return",
+    ma3: "collect"
+  },
+
+  exec(lage) {
+    if (lage !== "PULL") {
+      return {
+        status: "NO-PULL",
+        message: "Station nicht im PULL-Zustand",
+        given: lage
+      };
+    }
+
+    return {
+      status: "PULL",
+      direction: "BACKWARD",
+      respo: this.respo,
+      axis: this.axis,
+      io: this.io,
+      pipeline: this.pipeline,
+      port: this.port
+    };
+  },
+
+  // BONUS: Name-Kontrolle
+  checkName(name) {
+    const valid = [
+      "OK", "NOK", "FLOW", "BREAK", "ECHO",
+      "VOID", "ROOT", "DROP", "RISE",
+      "SPIN", "SHIFT", "IMPORT", "EXPORT",
+      "PULL", "PUSH"
+    ];
+
+    if (!valid.includes(name)) {
+      return {
+        status: "attention",
+        message: "Name nicht gültig – bitte prüfen",
+        given: name
+      };
+    }
+
+    return {
+      status: "valid",
+      message: "Name korrekt",
+      given: name
+    };
+  }
+};

@@ -1,0 +1,194 @@
+<!--
+  Page Status Checker
+  © iki1uc wieimmer MIT License (see LICENSE file in repo)
+  https://github.com/iki1uc
+<!--
+   IKEA‑FEHLER‑SCHABLONE • NAVI‑DREIECK
+<!--
+   404‑FEHLER‑SCHABLONE
+
+   Wenn du hier landest:
+   - Y → links prüfen (Pfad falsch)
+   - Z → rechts korrigieren (Ordner falsch)
+   - T → Tiefe prüfen (Layer / Unterordner)
+   - ORT → Ebene prüfen (△)
+   - HOME → Root prüfen (◆)
+-->
+
+   ACHSEN:
+   Y = LINKS
+   Z = RECHTS
+   X = HÖHE
+   T = TIEFE
+   O = URSPRUNG
+
+   META‑DREIECK:
+   ME   = innerer Punkt (Selbst)
+   OUR  = gemeinsame Achse (Team)
+   ORT  = Position / Ebene
+   HOME = Kern / Stabilität
+
+   FEHLER‑WEGE:
+   - Wenn Datei fehlt → Y‑Achse (links prüfen)
+   - Wenn Pfad falsch → Z‑Achse (rechts korrigieren)
+   - Wenn Ebene falsch → ORT‑Achse (△)
+   - Wenn Tiefe falsch → T‑Achse (Layer)
+   - Wenn Kern bricht → HOME‑Achse (◆)
+   - Wenn Orbit unsichtbar → GHOST‑ORBIT prüfen
+-->
+function diagnosePage(status, page) {
+
+    // IKEA‑NAVI‑DREIECK
+    const navi = {
+        Y: "links prüfen",
+        Z: "rechts korrigieren",
+        X: "Höhe / Struktur prüfen",
+        T: "Tiefe / Layer prüfen",
+        O: "Ursprung / Startpunkt prüfen"
+    };
+
+    // Fehler‑Richtungslogik
+    const direction =
+        status === "MISSING" ? navi.Y :
+        status === "ERROR"   ? navi.T :
+        status === "UNCLEAR" ? navi.X :
+        status === "HELP"    ? navi.Z :
+        navi.O;
+
+    return {
+        page,
+        status,
+        direction
+    };
+}
+
+
+-->
+<script>
+// Page Status Checker
+
+// Possible status types and their properties
+const STATUS_TYPES = {
+    OK:      { priority: 1, category: "reachable",    cause: "Page exists",       effect: "Normal",     impact: 0 },
+    MISSING: { priority: 2, category: "wrong-path",   cause: "Path incorrect",    effect: "Redirect",   impact: 1 },
+    ERROR:   { priority: 9, category: "network",      cause: "Network error",     effect: "Abort",      impact: 9 },
+    READY:   { priority: 3, category: "ready",        cause: "Ready to start",    effect: "Start",      impact: 2 },
+    COMPATIBLE: { priority: 4, category: "compatible",cause: "Compatible",        effect: "Synergy",    impact: 3 },
+    FIXED:   { priority: 5, category: "fixed",        cause: "Repaired",          effect: "Stable",     impact: 2 },
+    DONE:    { priority: 6, category: "done",         cause: "Completed",         effect: "Idle",       impact: 1 },
+    HELP:    { priority: 7, category: "assistance",   cause: "Needs assistance",  effect: "Support",    impact: 2 },
+    UNCLEAR: { priority: 8, category: "unclear",      cause: "Unclear",           effect: "Analyze",    impact: 5 }
+};
+
+// List of pages to check
+const PAGES = [
+    "index.html",
+    "DOM/DOM.html",
+    "MARKT/markt.html",
+    "BOERSE/boerse.html",
+    "EVO/EVO.html",
+    "EOS/EOS.html",
+    "funktion/funktion.html",
+    "respo/respo.html",
+    "tool48/pyramide.html"
+];
+
+// Checks whether a single page is reachable
+async function checkPage(path) {
+    try {
+        const res = await fetch(path, { method: "HEAD" });
+        return res.ok ? "OK" : "MISSING";
+    } catch {
+        return "ERROR";
+    }
+}
+
+// NEW diagnosePage (the only one)
+function diagnosePage(status, page) {
+    const s = STATUS_TYPES[status] || STATUS_TYPES.UNCLEAR;
+
+    const puzzleScore = {
+        OK: 100, READY: 80, COMPATIBLE: 90, FIXED: 70, DONE: 60,
+        HELP: 40, UNCLEAR: 30, ERROR: 10,
+        QI: 120, FC: 140, CORE: 200
+    }[status] || 0;
+
+    const flow = {
+        OK: "clear-flow",
+        READY: "entry-flow",
+        COMPATIBLE: "synergy-flow",
+        FIXED: "repair-flow",
+        DONE: "exit-flow",
+        HELP: "assist-flow",
+        UNCLEAR: "fog-flow",
+        ERROR: "block-flow",
+        QI: "truth-flow",
+        FC: "energy-flow",
+        CORE: "core-flow"
+    }[status] || "unknown-flow";
+
+    const tetrisScore = s.priority * 11 + s.impact * 9;
+
+    const wette = s.priority + puzzleScore;
+    const slide = s.impact + tetrisScore;
+
+    return {
+        page,
+        status,
+        priority: s.priority,
+        category: s.category,
+        cause: s.cause,
+        effect: s.effect,
+        impact: s.impact,
+        puzzleScore,
+        tetrisScore,
+        flow,
+        wette,
+        slide
+    };
+}
+
+// Compares two pages and rates how well they "match"
+function comparePages(a, b) {
+    return {
+        pair: a.page + " <-> " + b.page,
+        categoryMatch: a.category === b.category ? "match" : "different",
+        priorityMatch: Math.abs(a.priority - b.priority) <= 2 ? "close" : "far",
+        impactMatch: Math.abs(a.impact - b.impact) <= 2 ? "close" : "far",
+        compatibility:
+            (a.status === "OK" && b.status === "OK") ? "HIGH" :
+            (a.status === "MISSING" && b.status === "MISSING") ? "LOW" :
+            (a.status === "COMPATIBLE" && b.status === "COMPATIBLE") ? "SYNC" :
+            (a.status === "READY" && b.status === "READY") ? "START" :
+            "NONE"
+    };
+}
+
+// Builds all pairwise comparisons
+function buildComparisonMatrix(results) {
+    const matrix = [];
+    for (let i = 0; i < results.length; i++) {
+        for (let j = i + 1; j < results.length; j++) {
+            matrix.push(comparePages(results[i], results[j]));
+        }
+    }
+    return matrix;
+}
+
+// Main run
+(async () => {
+    const results = [];
+    for (const page of PAGES) {
+        const status = await checkPage(page);
+        results.push(diagnosePage(status, page));
+    }
+    const matrix = buildComparisonMatrix(results);
+    document.getElementById("status-report").innerHTML =
+        JSON.stringify({
+            pages: results,
+            comparisons: matrix
+        }, null, 2);
+})();
+</script>
+
+<pre id="status-report">Loading status report…</pre>

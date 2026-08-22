@@ -1,0 +1,39 @@
+export const EDITport = {
+  code: "EDIT",
+  layer: "4u",
+  station: "SUS",
+  action: "modify",
+  meaning: "Bearbeitung / Anpassung / Justierung",
+  respo: "ECHO",
+  axis: "PX-EDIT",
+  io: "IN→OUT",
+
+  exec(content) {
+    return {
+      status: "EDIT",
+      layer: this.layer,
+      station: this.station,
+      respo: this.respo,
+      axis: this.axis,
+      io: this.io,
+      content: content
+    };
+  },
+
+  // BONUS: Name-Kontrolle
+  checkName(name) {
+    const valid = ["EDIT", "PUSH", "PULL", "SHIFT", "FLOW", "BREAK", "SPIN", "RISE", "DROP", "ROOT"];
+    if (!valid.includes(name)) {
+      return {
+        status: "attention",
+        message: "Name nicht gültig – bitte prüfen",
+        given: name
+      };
+    }
+    return {
+      status: "valid",
+      message: "Name korrekt",
+      given: name
+    };
+  }
+};

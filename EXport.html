@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>4u – EXport</title>
+
+<style>
+body{background:#000;color:#0f0;font-family:monospace;padding:20px;}
+pre{background:#111;padding:12px;border:1px solid #333;}
+button{background:#111;color:#0f0;border:1px solid #333;padding:8px 16px;}
+</style>
+</head>
+
+<body>
+
+<h1>4u – EXport</h1>
+
+<button onclick="run()">EXPORT</button>
+
+<pre id="out">Bereit...</pre>
+
+<script src="fouru.js"></script> <!-- WICHTIG -->
+
+<script>
+function run(){
+  const outData = fourU("start8.html aktiv");
+
+  out.textContent =
+    "ALT:  " + outData.alt + "\n" +
+    "EVO7: " + outData.evo7 + "\n" +
+    "EVO8: " + outData.evo8;
+}
+</script>
+
+</body>
+</html>

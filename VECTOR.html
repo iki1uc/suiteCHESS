@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>VECTOR · IS</title>
+  <style>
+    body { font-family: monospace; background:#111; color:#ff0; padding:20px; }
+    .box { border:1px solid #ff0; padding:10px; margin-bottom:15px; }
+  </style>
+</head>
+<body>
+
+<h1>VECTOR · IS</h1>
+
+<div class="box">
+  <h3>SUS.shiftVEC</h3>
+  <button onclick="vec('INIT')">INIT</button>
+  <button onclick="vec('QI')">QI</button>
+  <button onclick="vec('IQQ')">IQQ</button>
+  <button onclick="vec('ANKER')">ANKER</button>
+  <pre id="vecOut"></pre>
+</div>
+
+<div class="box">
+  <h3>SUS.scanRESPO</h3>
+  <button onclick="scan()">SCAN RESPO</button>
+  <pre id="scanOut"></pre>
+</div>
+
+<div class="box">
+  <h3>EYE.view</h3>
+  <button onclick="eye()">VIEW RESPO</button>
+  <pre id="eyeOut"></pre>
+</div>
+
+<script type="module">
+  import { RESPO } from "./SUS.js";
+  import { SUS_shiftVEC } from "./SUS.shiftVEC";
+  import { SUS_scanRESPO } from "./SUS.scanRESPO";
+  import { EYE } from "./EYE.js";
+
+  function vec(state) {
+    document.getElementById("vecOut").innerText =
+      JSON.stringify(SUS_shiftVEC(state), null, 2);
+  }
+
+  function scan() {
+    document.getElementById("scanOut").innerText =
+      JSON.stringify(SUS_scanRESPO(RESPO), null, 2);
+  }
+
+  function eye() {
+    document.getElementById("eyeOut").innerText =
+      JSON.stringify(EYE.view(RESPO), null, 2);
+  }
+</script>
+
+</body>
+</html>

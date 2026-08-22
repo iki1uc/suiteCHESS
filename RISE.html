@@ -1,0 +1,66 @@
+export const RISE = {
+  code: "RISE",
+  state: "active",
+  action: "ascend",
+  meaning: "Aufwärtsbewegung / Erhöhung / Verstärkung / Wachstum",
+  station: "SUS",
+  respo: "OK",
+  axis: "AIR",
+  io: "allIN",
+
+  flow: true,
+  break: false,
+  root: false,
+
+  pipeline: 4,
+
+  port: {
+    ma1: "increase",
+    ma2: "boost",
+    ma3: "grow"
+  },
+
+  exec(lage) {
+    if (lage !== "RISE") {
+      return {
+        status: "NO-RISE",
+        message: "Station nicht im RISE-Zustand",
+        given: lage
+      };
+    }
+
+    return {
+      status: "RISE",
+      direction: "UP",
+      respo: this.respo,
+      axis: this.axis,
+      io: this.io,
+      pipeline: this.pipeline,
+      port: this.port
+    };
+  },
+
+  // BONUS: Name-Kontrolle
+  checkName(name) {
+    const valid = [
+      "OK", "NOK", "FLOW", "BREAK", "ECHO",
+      "VOID", "ROOT", "DROP", "RISE",
+      "SPIN", "SHIFT", "IMPORT", "EXPORT",
+      "PULL", "PUSH"
+    ];
+
+    if (!valid.includes(name)) {
+      return {
+        status: "attention",
+        message: "Name nicht gültig – bitte prüfen",
+        given: name
+      };
+    }
+
+    return {
+      status: "valid",
+      message: "Name korrekt",
+      given: name
+    };
+  }
+};

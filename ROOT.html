@@ -1,0 +1,66 @@
+export const ROOT = {
+  code: "ROOT",
+  state: "stable",
+  action: "origin",
+  meaning: "Ursprung / Stabilisierung / Rückkehr / Basis",
+  station: "SUS",
+  respo: "ROOT",
+  axis: "AIR",
+  io: "allIN",
+
+  flow: false,
+  break: false,
+  root: true,
+
+  pipeline: 0,
+
+  port: {
+    ma1: "anchor",
+    ma2: "origin",
+    ma3: "base"
+  },
+
+  exec(lage) {
+    if (lage !== "ROOT") {
+      return {
+        status: "NO-ROOT",
+        message: "Station nicht im ROOT-Zustand",
+        given: lage
+      };
+    }
+
+    return {
+      status: "ROOT",
+      direction: "ORIGIN",
+      respo: this.respo,
+      axis: this.axis,
+      io: this.io,
+      pipeline: this.pipeline,
+      port: this.port
+    };
+  },
+
+  // BONUS: Name-Kontrolle
+  checkName(name) {
+    const valid = [
+      "OK", "NOK", "FLOW", "BREAK", "ECHO",
+      "VOID", "ROOT", "DROP", "RISE",
+      "SPIN", "SHIFT", "IMPORT", "EXPORT",
+      "PULL", "PUSH"
+    ];
+
+    if (!valid.includes(name)) {
+      return {
+        status: "attention",
+        message: "Name nicht gültig – bitte prüfen",
+        given: name
+      };
+    }
+
+    return {
+      status: "valid",
+      message: "Name korrekt",
+      given: name
+    };
+  }
+};

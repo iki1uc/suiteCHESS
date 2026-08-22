@@ -1,0 +1,6 @@
+SUS.link = {
+  mode: "neutral",
+  type: "durchlass",
+  vector: "weitergabe",
+  bind: false
+}

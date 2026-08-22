@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NET · NC</title>
+
+  <style>
+    body { background:#000; color:#fff; font-family:monospace; padding:20px; }
+    .green { color:#0f0; }
+    .yellow { color:#ff0; }
+    .red { color:#f00; }
+    .box { border:1px solid #ff0; padding:10px; margin-bottom:20px; }
+  </style>
+</head>
+
+<body>
+
+<h1 class="yellow">NET · Neutral Connector</h1>
+<p>MOD: NET</p>
+<p>TYPE: Soft-Landing</p>
+<p>CORE: iki1uc</p>
+<p>VERSION: 1.0</p>
+<p>STATUS: active</p>
+
+<div class="box">
+  <h3 class="green">SUS.run</h3>
+  <button onclick="runSUS()">RUN</button>
+  <pre id="runOut"></pre>
+</div>
+
+<div class="box">
+  <h3 class="yellow">RESPO Scan</h3>
+  <button onclick="scan()">SCAN</button>
+  <pre id="scanOut"></pre>
+</div>
+
+<div class="box">
+  <h3 class="red">EYE.view</h3>
+  <button onclick="eye()">VIEW</button>
+  <pre id="eyeOut"></pre>
+</div>
+
+<script type="module">
+  import { NET } from "./NET.js";
+  import { RESPO } from "./SUS.js";
+
+  function runSUS() {
+    document.getElementById("runOut").innerText =
+      JSON.stringify(NET.run("FLOW"), null, 2);
+  }
+
+  function scan() {
+    document.getElementById("scanOut").innerText =
+      JSON.stringify(NET.respo(RESPO), null, 2);
+  }
+
+  function eye() {
+    document.getElementById("eyeOut").innerText =
+      JSON.stringify(NET.eye(RESPO), null, 2);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+export const IMport = {
+  code: "IMPORT",
+  layer: "4u",
+  station: "SUS",
+  action: "input",
+  meaning: "Eingabe / Aufnahme / Import",
+  respo: "ECHO",
+  axis: "PX-IN",
+  io: "IN",
+
+  flow: false,
+  break: false,
+  root: false,
+
+  pipeline: 2,
+
+  port: {
+    in1: "capture",
+    in2: "receive",
+    in3: "store"
+  },
+
+  exec(input) {
+    if (!input || input.trim() === "") {
+      return {
+        status: "NO-INPUT",
+        message: "Kein Eingabewert vorhanden",
+        given: input
+      };
+    }
+
+    return {
+      status: "IMPORT",
+      layer: this.layer,
+      station: this.station,
+      respo: this.respo,
+      axis: this.axis,
+      io: this.io,
+      pipeline: this.pipeline,
+      port: this.port,
+      input: input
+    };
+  },
+
+  // BONUS: Name-Kontrolle
+  checkName(name) {
+    const valid = [
+      "OK", "NOK", "FLOW", "BREAK", "ECHO",
+      "VOID", "ROOT", "DROP", "RISE",
+      "SPIN", "SHIFT", "IMPORT"
+    ];
+
+    if (!valid.includes(name)) {
+      return {
+        status: "attention",
+        message: "Name nicht gültig – bitte prüfen",
+        given: name
+      };
+    }
+
+    return {
+      status: "valid",
+      message: "Name korrekt",
+      given: name
+    };
+  }
+};

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ID · Neutral Core</title>
+
+  <style>
+    body { background:#000; color:#fff; font-family:monospace; padding:20px; }
+    .box { border:1px solid #0f0; padding:10px; margin-bottom:20px; }
+    .green { color:#0f0; }
+    .yellow { color:#ff0; }
+    .red { color:#f00; }
+  </style>
+</head>
+
+<body>
+
+<h1 class="green">ID · Neutral Core</h1>
+<p>MOD: ID</p>
+<p>TYPE: Soft-Landing</p>
+<p>CORE: iki1uc</p>
+<p>VERSION: 1.0</p>
+<p>STATUS: active</p>
+
+<div class="box">
+  <h3 class="yellow">RESPO Glyphs</h3>
+  <pre id="glyphOut"></pre>
+</div>
+
+<div class="box">
+  <h3 class="red">SUS Identity</h3>
+  <pre id="susOut"></pre>
+</div>
+
+<div class="box">
+  <h3 class="green">NC‑° % Anzeige</h3>
+  <pre id="ncOut"></pre>
+</div>
+
+<script type="module">
+  import { ID } from "./ID.js";
+
+  document.getElementById("glyphOut").innerText =
+    JSON.stringify(ID.respoGlyphs(), null, 2);
+
+  document.getElementById("susOut").innerText =
+    JSON.stringify(ID.identity(), null, 2);
+
+  document.getElementById("ncOut").innerText =
+    JSON.stringify({
+      percent: "100%",
+      degree: "360°",
+      nc: "NC²□"
+    }, null, 2);
+</script>
+
+</body>
+</html>

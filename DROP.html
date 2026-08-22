@@ -1,0 +1,60 @@
+export const DROP = {
+  code: "DROP",
+  state: "active",
+  action: "descend",
+  meaning: "Abwärtsbewegung / Entlastung / Abgabe",
+  station: "SUS",
+  respo: "NOK",
+  axis: "AIV",
+  io: "allOUT",
+  flow: false,
+  break: false,
+  root: false,
+
+  pipeline: 1,
+
+  port: {
+    ma1: "release",
+    ma2: "reduce",
+    ma3: "lower"
+  },
+
+  exec(lage) {
+    if (lage !== "DROP") {
+      return {
+        status: "NO-DROP",
+        message: "Station nicht im DROP-Zustand",
+        given: lage
+      };
+    }
+
+    return {
+      status: "DROP",
+      direction: "DOWN",
+      respo: this.respo,
+      axis: this.axis,
+      io: this.io,
+      pipeline: this.pipeline,
+      port: this.port
+    };
+  },
+
+  // BONUS: Name-Kontrolle
+  checkName(name) {
+    const valid = ["OK", "NOK", "FLOW", "BREAK", "ECHO", "VOID", "ROOT", "DROP"];
+
+    if (!valid.includes(name)) {
+      return {
+        status: "attention",
+        message: "Name nicht gültig – bitte prüfen",
+        given: name
+      };
+    }
+
+    return {
+      status: "valid",
+      message: "Name korrekt",
+      given: name
+    };
+  }
+};

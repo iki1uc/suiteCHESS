@@ -1,0 +1,8 @@
+export const SUS_list = function(memory) {
+  return {
+    mode: "neutral",
+    list: memory,
+    bind: false
+  };
+};
+

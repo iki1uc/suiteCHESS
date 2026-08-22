@@ -1,0 +1,7 @@
+export const SUS_load = function(input) {
+  return {
+    mode: "neutral",
+    loaded: input,
+    bind: false
+  };
+};

@@ -1,0 +1,37 @@
+/* iki1uc – MAIN · Bewegung 3 · SHIFT (v2)
+   Seitwärtsbewegung / Umlenkung / Übergang
+   Neu: AIR/AIV-Auto, ECHO-Stabilisierung, Port-Klärung
+*/
+
+const MAIN = {
+    lage: "SHIFT",
+    respo: "ECHO",
+    move: "side",
+    axis: "AUTO",      // NEU: automatische Achsenwahl
+    io: "mixIN",       // NEU: gemischter Input
+    exec() {
+        if (this.lage !== "SHIFT") return "NO-SHIFT";
+
+        // Achsenlogik: SHIFT entscheidet selbst
+        const axis = this.axis === "AUTO"
+            ? "AIR"     // Standard: AIR → Vorwärts-Umlenkung
+            : this.axis;
+
+        return {
+            state: "ACTIVE",
+            direction: "SIDE",
+            respo: this.respo,
+            io: this.io,
+            axis: axis,
+            pipeline: 2,
+            port: {
+                ma1: "transition",   // Übergang
+                ma2: "shift",        // Umlenkung
+                ma3: "redirect"      // Weiterleitung
+            }
+        };
+    }
+};
+
+const SHIFT = MAIN.exec();
+console.log(SHIFT);
